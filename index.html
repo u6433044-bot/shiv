@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Shivaya — Plan. Remember. Grow.</title><link rel="stylesheet" href="style.css"></head>
+<body>
+<aside><div class="brand"><div class="logo">ॐ</div><div><b>SHIVAYA</b><small>Plan. Remember. Grow.</small></div></div>
+<nav><button class="active" data-page="home">⌂ Home</button><button data-page="tasks">✓ Tasks</button><button data-page="calendar">▣ Calendar</button><button data-page="student">🎓 Student</button><button data-page="settings">⚙ Settings</button></nav>
+<p class="quote">“Organize your time.<br>Protect your focus.”</p></aside>
+<main><header><div><small>STUDENT LIFE COMPANION</small><h1 id="title">Good evening 👋</h1></div><div><button id="notify">🔔</button><span class="avatar">S</span></div></header>
+<div id="msg"></div>
+<section id="home" class="page show"><div class="hero"><div><em>TODAY</em><h2>Your day, calmly organized.</h2><p id="heroText"></p></div><strong class="moon">☾</strong></div>
+<div class="stats"><div><b id="done">0</b><span>Completed</span></div><div><b id="pending">0</b><span>Pending</span></div><div><b id="high">0</b><span>High priority</span></div></div>
+<h2>Today's focus <button class="link" onclick="openModal()">＋ Add</button></h2><div id="today" class="list"></div>
+<h2>Upcoming</h2><div id="upcoming" class="list"></div></section>
+<section id="tasks" class="page"><div class="toolbar"><input id="search" placeholder="Search tasks, events, birthdays..."><button class="primary" onclick="openModal()">＋ New reminder</button></div>
+<div class="filters"><button class="active" data-filter="all">All</button><button data-filter="Task">Tasks</button><button data-filter="Assignment">Assignments</button><button data-filter="Exam">Exams</button><button data-filter="Birthday">Birthdays</button><button data-filter="Event">Events</button></div><div id="all" class="list"></div></section>
+<section id="calendar" class="page"><div class="row"><div><small id="month"></small><h2>Shivaya Calendar</h2></div><button class="primary" onclick="openModal('Event')">＋ Add event</button></div><div class="cal"><div class="week"><b>Sun</b><b>Mon</b><b>Tue</b><b>Wed</b><b>Thu</b><b>Fri</b><b>Sat</b></div><div id="grid" class="grid"></div></div></section>
+<section id="student" class="page"><div class="student"><div>🎓</div><h2>Student mode</h2><p>Assignments, exams, projects and study sessions in one place.</p></div><div class="cards"><div class="card"><h3>Academic deadlines</h3><div id="academic"></div></div><div class="card"><h3>Coming next</h3><p>📚 Subjects</p><p>⏳ Exam countdowns</p><p>🧠 Study planner</p><p>📊 Attendance</p><p>🤖 AI study planning</p></div></div></section>
+<section id="settings" class="page"><div class="card"><h2>Notifications</h2><p>Allow Shivaya to show browser reminders.</p><button class="primary" onclick="enableNotifications()">Enable notifications</button></div><div class="card"><h2>Google Calendar</h2><p>Calendar OAuth integration can be connected in the next backend version.</p><button class="secondary" onclick="say('Google Calendar setup is ready for the next integration.')">Connect Google Calendar</button></div><div class="card"><h2>About Shivaya</h2><p>Plan. Remember. Grow.</p></div></section>
+</main>
+<div id="modal" class="overlay"><form id="form"><div class="row"><h2>Add reminder</h2><button type="button" onclick="closeModal()">×</button></div>
+<label>Title<input id="taskTitle" required placeholder="Finish AI assignment"></label><div class="two"><label>Type<select id="type"><option>Task</option><option>Assignment</option><option>Study</option><option>Event</option><option>Birthday</option><option>Exam</option></select></label><label>Priority<select id="priority"><option>Medium</option><option>High</option><option>Low</option></select></label></div>
+<label>Date & time<input id="date" type="datetime-local" required></label><label>Repeat<select id="repeat"><option>none</option><option>daily</option><option>weekly</option><option>monthly</option><option>yearly</option></select></label><label>Notes<textarea id="notes" rows="3"></textarea></label><button class="primary wide">Save reminder</button></form></div>
+<script src="script.js"></script></body></html>
