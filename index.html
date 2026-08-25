@@ -3,378 +3,606 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Shivaya — Smart Student Hub & AI Copilot</title>
-  <!-- Google Fonts & Font Awesome Icons -->
+  <title>Shivaya — Next-Gen Student Workspace & AI Studio</title>
+  
+  <!-- Fonts & Icons -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="stylesheet" href="style.css" />
 </head>
-<body>
-  <div class="app-layout">
+<body class="theme-dark">
+
+  <div class="workspace-wrapper">
     
-    <!-- Sidebar Navigation -->
-    <aside class="sidebar">
-      <div class="brand">
-        <div class="brand-logo">
-          <i class="fa-solid fa-graduation-cap"></i>
+    <!-- Collapsible Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-top">
+        <div class="brand">
+          <div class="brand-icon"><i class="fa-solid fa-bolt"></i></div>
+          <div class="brand-title">
+            <h2>Shivaya</h2>
+            <span class="version-tag">STUDENT PRO</span>
+          </div>
         </div>
-        <div class="brand-text">
-          <h2>Shivaya</h2>
-          <span>Student OS</span>
-        </div>
+
+        <button class="quick-command-btn" onclick="openCommandPalette()">
+          <span><i class="fa-solid fa-magnifying-glass"></i> Quick Command</span>
+          <kbd>Ctrl K</kbd>
+        </button>
       </div>
 
-      <nav class="nav-menu">
-        <button class="nav-item active" data-tab="dashboard">
-          <i class="fa-solid fa-chart-pie"></i>
+      <nav class="nav-sections">
+        <div class="nav-group-label">WORKSPACE</div>
+        <button class="nav-btn active" data-tab="dashboard">
+          <i class="fa-solid fa-gauge-high"></i>
           <span>Dashboard</span>
         </button>
-        <button class="nav-item" data-tab="ai-tutor">
-          <i class="fa-solid fa-robot"></i>
-          <span>AI Study Copilot</span>
-          <span class="badge">AI</span>
+        <button class="nav-btn" data-tab="calendar">
+          <i class="fa-regular fa-calendar-check"></i>
+          <span>Interactive Calendar</span>
         </button>
-        <button class="nav-item" data-tab="calendar">
-          <i class="fa-solid fa-calendar-days"></i>
-          <span>Google Calendar</span>
+        <button class="nav-btn" data-tab="kanban">
+          <i class="fa-solid fa-table-columns"></i>
+          <span>Kanban Tasks</span>
         </button>
-        <button class="nav-item" data-tab="tasks">
-          <i class="fa-solid fa-list-check"></i>
-          <span>Assignments</span>
+        
+        <div class="nav-group-label">INTELLIGENCE</div>
+        <button class="nav-btn" data-tab="ai-studio">
+          <i class="fa-solid fa-brain"></i>
+          <span>AI Study Studio</span>
+          <span class="pill-sparkle">Active</span>
         </button>
-        <button class="nav-item" data-tab="pomodoro">
-          <i class="fa-solid fa-stopwatch-20"></i>
-          <span>Focus Timer</span>
+        <button class="nav-btn" data-tab="flashcards">
+          <i class="fa-solid fa-layer-group"></i>
+          <span>Flashcard Deck</span>
         </button>
-        <button class="nav-item" data-tab="tools">
+
+        <div class="nav-group-label">FOCUS & UTILITIES</div>
+        <button class="nav-btn" data-tab="focus-room">
+          <i class="fa-solid fa-headphones-simple"></i>
+          <span>Focus & Ambient Audio</span>
+        </button>
+        <button class="nav-btn" data-tab="notes">
+          <i class="fa-solid fa-pen-fancy"></i>
+          <span>Scratchpad Notes</span>
+        </button>
+        <button class="nav-btn" data-tab="gpa">
           <i class="fa-solid fa-calculator"></i>
-          <span>GPA & Tools</span>
+          <span>GPA & Exam Predictor</span>
         </button>
       </nav>
 
-      <div class="sidebar-footer">
-        <div class="streak-card">
-          <i class="fa-solid fa-fire streak-icon"></i>
-          <div>
-            <p class="streak-title">Daily Focus Streak</p>
-            <p class="streak-count"><span id="streak-days">5</span> Days Active</p>
+      <div class="sidebar-bottom">
+        <div class="user-focus-stats">
+          <div class="user-focus-header">
+            <span>Weekly Study Goal</span>
+            <strong id="weekly-goal-percent">65%</strong>
+          </div>
+          <div class="progress-bar-bg">
+            <div class="progress-bar-fill" style="width: 65%;"></div>
           </div>
         </div>
       </div>
     </aside>
 
-    <!-- Main Content Area -->
-    <main class="main-content">
+    <!-- Main Viewport -->
+    <main class="viewport">
       
-      <!-- Top Header -->
+      <!-- Top Navigation Bar -->
       <header class="topbar">
-        <div class="greeting">
-          <h1 id="welcome-msg">Welcome back, Scholar 👋</h1>
-          <p id="today-date">Loading date...</p>
-        </div>
-        <div class="topbar-actions">
-          <div class="live-clock">
-            <i class="fa-regular fa-clock"></i>
-            <span id="current-time">00:00:00</span>
+        <div class="topbar-left">
+          <button class="mobile-toggle" id="sidebar-toggle"><i class="fa-solid fa-bars"></i></button>
+          <div class="breadcrumb">
+            <span class="text-muted">Shivaya OS</span>
+            <i class="fa-solid fa-chevron-right text-muted separator"></i>
+            <span id="current-page-title" class="fw-bold">Dashboard</span>
           </div>
-          <button class="btn btn-primary" onclick="switchTab('ai-tutor')">
-            <i class="fa-solid fa-wand-magic-sparkles"></i> Ask AI
-          </button>
+        </div>
+
+        <div class="topbar-right">
+          <div class="ambient-indicator" id="ambient-badge" style="display:none;">
+            <i class="fa-solid fa-wave-square fa-fade"></i>
+            <span id="active-sound-name">Binaural 40Hz</span>
+            <button onclick="stopAmbientSound()"><i class="fa-solid fa-xmark"></i></button>
+          </div>
+
+          <div class="time-widget">
+            <i class="fa-regular fa-clock"></i>
+            <span id="live-clock">00:00:00</span>
+          </div>
         </div>
       </header>
 
       <!-- TAB 1: DASHBOARD -->
-      <section id="tab-dashboard" class="tab-content active">
-        <!-- Quick Stats Grid -->
-        <div class="stats-grid">
-          <div class="stat-card">
-            <div class="stat-icon bg-purple"><i class="fa-solid fa-book-open"></i></div>
-            <div>
-              <h3>Pending Tasks</h3>
-              <p class="stat-value" id="dash-pending-tasks">0</p>
+      <section id="tab-dashboard" class="tab-pane active">
+        <div class="hero-banner">
+          <div class="hero-content">
+            <h1>Elevate Your Academic Potential.</h1>
+            <p>Manage assignments, generate AI quizzes, plan with Google Calendar, and enter deep focus.</p>
+            <div class="hero-actions">
+              <button class="btn btn-primary" onclick="switchTab('ai-studio')"><i class="fa-solid fa-wand-magic-sparkles"></i> Open AI Studio</button>
+              <button class="btn btn-secondary" onclick="switchTab('focus-room')"><i class="fa-solid fa-play"></i> Start 25m Focus</button>
             </div>
           </div>
-          <div class="stat-card">
-            <div class="stat-icon bg-blue"><i class="fa-solid fa-hourglass-half"></i></div>
+          <div class="hero-metric-pill">
+            <i class="fa-solid fa-fire fire-icon"></i>
             <div>
-              <h3>Focus Time Today</h3>
-              <p class="stat-value" id="dash-focus-time">0 min</p>
-            </div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-icon bg-green"><i class="fa-solid fa-calendar-check"></i></div>
-            <div>
-              <h3>Next Exam In</h3>
-              <p class="stat-value" id="dash-exam-days">--</p>
+              <span class="lbl">Focus Streak</span>
+              <h4>7 Days Active</h4>
             </div>
           </div>
         </div>
 
-        <div class="dashboard-grid">
-          <!-- Live Exam Countdown -->
-          <div class="card countdown-card">
-            <div class="card-header">
-              <h3><i class="fa-solid fa-stopwatch"></i> Upcoming Exam Countdown</h3>
-              <button class="btn-sm" id="edit-exam-btn">Set Exam</button>
+        <!-- Metrics Row -->
+        <div class="metric-cards-grid">
+          <div class="metric-card">
+            <div class="metric-header">
+              <span>ASSIGNMENTS REMAINING</span>
+              <i class="fa-solid fa-list-check icon-indigo"></i>
             </div>
-            <div class="countdown-body">
-              <h4 id="exam-title">Midterm Final Exam</h4>
-              <div class="timer-tiles">
-                <div class="tile"><span id="cd-days">00</span><label>Days</label></div>
-                <div class="tile"><span id="cd-hours">00</span><label>Hours</label></div>
-                <div class="tile"><span id="cd-mins">00</span><label>Mins</label></div>
-                <div class="tile"><span id="cd-secs">00</span><label>Secs</label></div>
-              </div>
+            <h2 id="dash-task-count">0</h2>
+            <div class="metric-footer text-emerald"><i class="fa-solid fa-arrow-trend-up"></i> Auto-synced</div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-header">
+              <span>EXAM COUNTDOWN</span>
+              <i class="fa-solid fa-hourglass-start icon-amber"></i>
+            </div>
+            <h2 id="dash-exam-countdown">--</h2>
+            <div class="metric-footer text-muted" id="dash-exam-title">Physics Midterm</div>
+          </div>
+
+          <div class="metric-card">
+            <div class="metric-header">
+              <span>TODAY'S FOCUS TIME</span>
+              <i class="fa-solid fa-brain icon-cyan"></i>
+            </div>
+            <h2 id="dash-focus-total">0 mins</h2>
+            <div class="metric-footer text-emerald">Deep work session</div>
+          </div>
+        </div>
+
+        <!-- Dashboard Two-Column Grid -->
+        <div class="dual-grid">
+          <!-- Quick Task Preview -->
+          <div class="panel">
+            <div class="panel-header">
+              <h3><i class="fa-solid fa-bolt-lightning text-amber"></i> Urgent Action Items</h3>
+              <button class="btn-text" onclick="switchTab('kanban')">View All →</button>
+            </div>
+            <div class="quick-tasks-list" id="dash-quick-tasks">
+              <!-- Dynamically inserted -->
             </div>
           </div>
 
-          <!-- Quick Action AI Prompt Box -->
-          <div class="card ai-preview-card">
-            <div class="card-header">
-              <h3><i class="fa-solid fa-bolt"></i> Quick Study Assistance</h3>
+          <!-- Quick AI Concept Explainer -->
+          <div class="panel">
+            <div class="panel-header">
+              <h3><i class="fa-solid fa-brain icon-indigo"></i> Instant AI Solver</h3>
             </div>
-            <p class="text-muted">Need a fast summary or formula explanation?</p>
-            <div class="quick-ai-input">
-              <input type="text" id="dash-ai-input" placeholder="e.g., Explain Newton's 3rd law in simple words..." />
-              <button id="dash-ai-btn" class="btn btn-primary"><i class="fa-solid fa-arrow-right"></i></button>
+            <p class="text-muted text-sm">Paste any tricky equation, concept, or theorem for an instant simple explanation:</p>
+            <div class="instant-ai-input-wrap">
+              <input type="text" id="dash-quick-ai-query" placeholder="e.g. Explain Heisenberg's Uncertainty Principle..." />
+              <button class="btn btn-primary" onclick="solveFromDash()"><i class="fa-solid fa-arrow-right"></i></button>
             </div>
-            <div class="quick-tags">
-              <span class="tag" onclick="quickPrompt('Summarize photosynthesis')">🌱 Photosynthesis</span>
-              <span class="tag" onclick="quickPrompt('Calculus derivatives cheat sheet')">📐 Derivatives</span>
-              <span class="tag" onclick="quickPrompt('Give me a 3-step study strategy')">🎯 Study Plan</span>
+            <div class="quick-chips">
+              <button class="chip" onclick="quickAiAsk('Explain Bayes Theorem with a simple real-world example')">📊 Bayes Theorem</button>
+              <button class="chip" onclick="quickAiAsk('Summarize the Krebs Cycle in 4 main points')">🧪 Krebs Cycle</button>
+              <button class="chip" onclick="quickAiAsk('Provide the intuition behind Matrix Eigenvalues')">📐 Eigenvalues</button>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- TAB 2: AI STUDY COPILOT -->
-      <section id="tab-ai-tutor" class="tab-content">
-        <div class="card chat-container">
-          <div class="chat-header">
-            <div class="chat-status">
-              <div class="status-indicator"></div>
-              <div>
-                <h3>Shivaya AI Study Assistant</h3>
-                <span class="text-muted">Available 24/7 for homework, notes & concept review</span>
+      <!-- TAB 2: INTERACTIVE CALENDAR & GCAL SYNC -->
+      <section id="tab-calendar" class="tab-pane">
+        <div class="calendar-workspace">
+          <div class="panel calendar-panel">
+            <div class="calendar-nav-bar">
+              <div class="cal-month-nav">
+                <button class="btn-icon" onclick="changeMonth(-1)"><i class="fa-solid fa-chevron-left"></i></button>
+                <h3 id="cal-month-year">August 2026</h3>
+                <button class="btn-icon" onclick="changeMonth(1)"><i class="fa-solid fa-chevron-right"></i></button>
               </div>
+              <button class="btn btn-secondary" onclick="openNewEventModal()"><i class="fa-solid fa-plus"></i> Add Event</button>
             </div>
-            <button class="btn-sm btn-outline" id="clear-chat-btn"><i class="fa-solid fa-trash-can"></i> Clear</button>
+
+            <div class="calendar-grid-header">
+              <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
+            </div>
+            <div class="calendar-days-grid" id="calendar-days">
+              <!-- Rendered via JS -->
+            </div>
           </div>
 
-          <div class="chat-messages" id="chat-box">
-            <div class="msg msg-ai">
-              <div class="avatar"><i class="fa-solid fa-robot"></i></div>
-              <div class="bubble">
-                Hello! I am your <strong>Shivaya AI Study Copilot</strong>. Ask me anything: explain a difficult topic, quiz you before a test, solve a problem, or summarize your notes!
+          <div class="panel calendar-side-panel">
+            <div class="panel-header">
+              <h3><i class="fa-brands fa-google text-indigo"></i> Sync with Google Calendar</h3>
+            </div>
+            <p class="text-muted text-sm">Create an event and push it straight to your personal Google Calendar account with 1-click.</p>
+            
+            <form id="gcal-quick-form" class="app-form">
+              <div class="input-field">
+                <label>Event Name</label>
+                <input type="text" id="gcal-ev-title" placeholder="Calculus Exam Prep" required />
               </div>
-            </div>
-          </div>
-
-          <div class="chat-input-area">
-            <div class="prompt-suggestions">
-              <button onclick="sendPreset('Create a 5-question quiz on World War II with answers')">📝 Quiz me on WW2</button>
-              <button onclick="sendPreset('Explain quantum superposition to a high schooler')">🔬 Explain Superposition</button>
-              <button onclick="sendPreset('How do I structure an academic research paper?')">📑 Essay Outline</button>
-            </div>
-            <form id="chat-form" class="chat-form">
-              <input type="text" id="chat-input" placeholder="Ask your question or paste your study notes..." required autocomplete="off" />
-              <button type="submit" class="btn btn-primary"><i class="fa-solid fa-paper-plane"></i></button>
+              <div class="input-row">
+                <div class="input-field">
+                  <label>Start</label>
+                  <input type="datetime-local" id="gcal-ev-start" required />
+                </div>
+                <div class="input-field">
+                  <label>End</label>
+                  <input type="datetime-local" id="gcal-ev-end" required />
+                </div>
+              </div>
+              <div class="input-field">
+                <label>Notes / Chapters</label>
+                <textarea id="gcal-ev-notes" rows="2" placeholder="Topics 1 to 5, revision questions..."></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary w-100"><i class="fa-brands fa-google"></i> Push to Google Calendar</button>
             </form>
           </div>
         </div>
       </section>
 
-      <!-- TAB 3: GOOGLE CALENDAR INTEGRATION -->
-      <section id="tab-calendar" class="tab-content">
-        <div class="card-grid-split">
-          <!-- Calendar Sync Form -->
-          <div class="card">
-            <div class="card-header">
-              <h3><i class="fa-brands fa-google"></i> Add to Google Calendar</h3>
+      <!-- TAB 3: KANBAN BOARD -->
+      <section id="tab-kanban" class="tab-pane">
+        <div class="kanban-action-bar">
+          <button class="btn btn-primary" onclick="openNewTaskModal()"><i class="fa-solid fa-plus"></i> Add New Task</button>
+          <div class="kanban-filters">
+            <select id="kanban-filter-subject" onchange="renderKanban()">
+              <option value="ALL">All Subjects</option>
+              <option value="Computer Science">Computer Science</option>
+              <option value="Mathematics">Mathematics</option>
+              <option value="Physics">Physics</option>
+              <option value="Literature">Literature</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="kanban-board">
+          <!-- Col 1 -->
+          <div class="kanban-col">
+            <div class="kanban-col-header">
+              <div class="col-indicator bg-amber"></div>
+              <h4>To Do</h4>
+              <span class="col-count" id="count-todo">0</span>
             </div>
-            <p class="text-muted">Fill out your study session or exam and directly sync it with your official Google Calendar with 1 click.</p>
-            
-            <form id="gcal-form" class="gcal-form">
-              <div class="form-group">
-                <label>Event / Exam Title</label>
-                <input type="text" id="gcal-title" placeholder="e.g., Physics Midterm Exam" required />
-              </div>
-              <div class="form-row">
-                <div class="form-group">
-                  <label>Start Date & Time</label>
-                  <input type="datetime-local" id="gcal-start" required />
-                </div>
-                <div class="form-group">
-                  <label>End Date & Time</label>
-                  <input type="datetime-local" id="gcal-end" required />
-                </div>
-              </div>
-              <div class="form-group">
-                <label>Details / Description</label>
-                <textarea id="gcal-desc" rows="3" placeholder="Chapters to cover, room number, or study notes..."></textarea>
-              </div>
-              <div class="form-group">
-                <label>Location (Optional)</label>
-                <input type="text" id="gcal-loc" placeholder="e.g., Room 402 or Zoom link" />
-              </div>
-              <button type="submit" class="btn btn-primary btn-block">
-                <i class="fa-brands fa-google"></i> Open & Add to Google Calendar
-              </button>
-            </form>
+            <div class="kanban-cards" id="kanban-todo"></div>
           </div>
 
-          <!-- Schedule Timetable -->
-          <div class="card">
-            <div class="card-header">
-              <h3><i class="fa-regular fa-calendar-days"></i> Quick Weekly Routine</h3>
+          <!-- Col 2 -->
+          <div class="kanban-col">
+            <div class="kanban-col-header">
+              <div class="col-indicator bg-indigo"></div>
+              <h4>In Progress</h4>
+              <span class="col-count" id="count-progress">0</span>
             </div>
-            <div class="timetable-list">
-              <div class="timetable-item">
-                <span class="time-tag">08:00 - 10:00 AM</span>
-                <div>
-                  <h4>Deep Focus / Core Revision</h4>
-                  <p class="text-muted">High cognitive load subjects (Math / Science)</p>
-                </div>
-              </div>
-              <div class="timetable-item">
-                <span class="time-tag">02:00 - 04:00 PM</span>
-                <div>
-                  <h4>Lecture Review & Assignments</h4>
-                  <p class="text-muted">Practice questions & coursework</p>
-                </div>
-              </div>
-              <div class="timetable-item">
-                <span class="time-tag">07:00 - 08:30 PM</span>
-                <div>
-                  <h4>AI Assisted Flashcards & Recap</h4>
-                  <p class="text-muted">Active recall before sleep</p>
-                </div>
-              </div>
+            <div class="kanban-cards" id="kanban-progress"></div>
+          </div>
+
+          <!-- Col 3 -->
+          <div class="kanban-col">
+            <div class="kanban-col-header">
+              <div class="col-indicator bg-emerald"></div>
+              <h4>Completed</h4>
+              <span class="col-count" id="count-done">0</span>
             </div>
+            <div class="kanban-cards" id="kanban-done"></div>
           </div>
         </div>
       </section>
 
-      <!-- TAB 4: ASSIGNMENTS & TASKS -->
-      <section id="tab-tasks" class="tab-content">
-        <div class="card">
-          <div class="card-header">
-            <h3><i class="fa-solid fa-list-check"></i> Assignment & Task Manager</h3>
-            <span class="badge" id="task-count-badge">0 tasks</span>
+      <!-- TAB 4: AI STUDY STUDIO -->
+      <section id="tab-ai-studio" class="tab-pane">
+        <div class="ai-studio-grid">
+          
+          <!-- Mode Selection Sidebar -->
+          <div class="panel ai-modes-panel">
+            <h3><i class="fa-solid fa-brain"></i> AI Study Modes</h3>
+            <div class="ai-mode-tabs">
+              <button class="ai-tab-btn active" data-aimode="chat"><i class="fa-solid fa-comments"></i> Concept Tutor</button>
+              <button class="ai-tab-btn" data-aimode="quiz"><i class="fa-solid fa-square-check"></i> Practice Quiz Engine</button>
+              <button class="ai-tab-btn" data-aimode="summarizer"><i class="fa-solid fa-file-lines"></i> Note Summarizer</button>
+              <button class="ai-tab-btn" data-aimode="settings"><i class="fa-solid fa-key"></i> API Key Settings</button>
+            </div>
           </div>
 
-          <form id="task-form" class="task-form">
-            <input type="text" id="task-title" placeholder="Add an assignment, reading or project..." required />
-            <select id="task-subject">
-              <option value="General">General</option>
-              <option value="Math">Math</option>
-              <option value="Science">Science</option>
-              <option value="Coding">Coding</option>
-              <option value="History">History</option>
-              <option value="Languages">Languages</option>
-            </select>
-            <select id="task-priority">
-              <option value="Low">Low Priority</option>
-              <option value="Medium" selected>Medium</option>
-              <option value="High">High Priority 🔥</option>
-            </select>
-            <input type="date" id="task-date" />
-            <button type="submit" class="btn btn-primary"><i class="fa-solid fa-plus"></i> Add</button>
-          </form>
+          <!-- AI Display Container -->
+          <div class="panel ai-workspace-panel">
+            
+            <!-- Chat Mode -->
+            <div id="ai-view-chat" class="ai-view active">
+              <div class="chat-thread" id="chat-thread">
+                <div class="chat-bubble ai">
+                  <div class="bubble-header"><i class="fa-solid fa-brain"></i> Shivaya AI Tutor</div>
+                  <div class="bubble-body">
+                    Welcome! I'm your dedicated 24/7 Academic Copilot. Ask me to break down complex proofs, draft essay structures, debug code, or explain challenging theories in intuitive language.
+                  </div>
+                </div>
+              </div>
+              <div class="chat-compose-bar">
+                <input type="text" id="chat-prompt-input" placeholder="Type your academic question..." onkeydown="if(event.key==='Enter') sendAiMessage()" />
+                <button class="btn btn-primary" onclick="sendAiMessage()"><i class="fa-solid fa-paper-plane"></i></button>
+              </div>
+            </div>
 
-          <div class="task-list" id="task-container">
-            <!-- Dynamic task items go here -->
+            <!-- Interactive Quiz Engine View -->
+            <div id="ai-view-quiz" class="ai-view">
+              <div class="quiz-generator-header">
+                <h4>Dynamic Multiple Choice Quiz Generator</h4>
+                <p class="text-muted text-sm">Select a subject or type a topic to generate an interactive self-test with automated grading.</p>
+                <div class="input-row">
+                  <input type="text" id="quiz-topic-input" placeholder="e.g. Photosynthesis, Newton's Laws, Data Structures" />
+                  <button class="btn btn-primary" onclick="generateInteractiveQuiz()"><i class="fa-solid fa-wand-magic-sparkles"></i> Generate Quiz</button>
+                </div>
+              </div>
+              <div class="quiz-output-area" id="quiz-container">
+                <!-- Dynamically generated questions -->
+              </div>
+            </div>
+
+            <!-- Note Summarizer View -->
+            <div id="ai-view-summarizer" class="ai-view">
+              <div class="summarizer-box">
+                <h4>AI Note Compressor & Bullet-Point Synthesizer</h4>
+                <textarea id="notes-raw-input" rows="6" placeholder="Paste your lecture notes, textbook excerpt, or articles here..."></textarea>
+                <button class="btn btn-primary" onclick="summarizeNotes()"><i class="fa-solid fa-compress"></i> Synthesize & Extract Key Concepts</button>
+                <div class="summarizer-result" id="summarizer-output" style="display:none;"></div>
+              </div>
+            </div>
+
+            <!-- API Key Settings -->
+            <div id="ai-view-settings" class="ai-view">
+              <div class="api-key-config">
+                <h4>Custom AI Model Configuration (Optional)</h4>
+                <p class="text-muted text-sm">Shivaya includes a powerful offline student knowledge bank. You can optionally plug in your own free <strong>Google Gemini API Key</strong> or <strong>OpenAI API Key</strong> for limitless real-time internet intelligence.</p>
+                
+                <div class="input-field mt-3">
+                  <label>Your Gemini / OpenAI API Key</label>
+                  <input type="password" id="user-custom-api-key" placeholder="Paste your AI API Key here..." />
+                </div>
+                <button class="btn btn-primary" onclick="saveApiKey()"><i class="fa-solid fa-check"></i> Save Key to LocalStorage</button>
+                <p id="api-key-status" class="text-emerald text-sm mt-2" style="display:none;">✓ API Key saved securely to your browser storage!</p>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+      <!-- TAB 5: FLASHCARDS -->
+      <section id="tab-flashcards" class="tab-pane">
+        <div class="flashcard-workspace">
+          <div class="flashcard-deck-header">
+            <div>
+              <h2 id="fc-deck-title">Active Recall Deck</h2>
+              <span class="text-muted" id="fc-counter">Card 1 of 4</span>
+            </div>
+            <button class="btn btn-secondary" onclick="openAddCardModal()"><i class="fa-solid fa-plus"></i> New Flashcard</button>
+          </div>
+
+          <div class="flashcard-card-scene" onclick="flipFlashcard()">
+            <div class="flashcard-inner-box" id="flashcard-element">
+              <div class="fc-side fc-front">
+                <div class="fc-badge">QUESTION (Click to flip)</div>
+                <p id="fc-front-text">Loading question...</p>
+              </div>
+              <div class="fc-side fc-back">
+                <div class="fc-badge text-emerald">ANSWER</div>
+                <p id="fc-back-text">Loading answer...</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="flashcard-actions">
+            <button class="btn btn-secondary" onclick="navigateFlashcard(-1)"><i class="fa-solid fa-arrow-left"></i> Previous</button>
+            <button class="btn btn-primary" onclick="navigateFlashcard(1)">Next Card <i class="fa-solid fa-arrow-right"></i></button>
           </div>
         </div>
       </section>
 
-      <!-- TAB 5: POMODORO FOCUS TIMER -->
-      <section id="tab-pomodoro" class="tab-content">
-        <div class="pomodoro-wrapper">
-          <div class="card pomodoro-card">
-            <div class="pomo-modes">
-              <button class="pomo-mode active" data-time="25">Focus (25m)</button>
-              <button class="pomo-mode" data-time="5">Short Break (5m)</button>
-              <button class="pomo-mode" data-time="15">Long Break (15m)</button>
+      <!-- TAB 6: FOCUS ROOM & AMBIENT AUDIO -->
+      <section id="tab-focus-room" class="tab-pane">
+        <div class="focus-room-container">
+          
+          <div class="pomodoro-box">
+            <div class="pomo-type-selector">
+              <button class="pomo-btn active" onclick="setPomoMode(25, this)">Focus (25m)</button>
+              <button class="pomo-btn" onclick="setPomoMode(5, this)">Short Break (5m)</button>
+              <button class="pomo-btn" onclick="setPomoMode(15, this)">Long Break (15m)</button>
             </div>
-            
-            <div class="pomo-clock">
-              <h1 id="pomo-display">25:00</h1>
-              <p id="pomo-state" class="text-muted">Stay focused on one task</p>
-            </div>
+
+            <div class="pomo-timer-huge" id="pomo-timer-text">25:00</div>
 
             <div class="pomo-controls">
-              <button id="pomo-start-btn" class="btn btn-primary btn-lg"><i class="fa-solid fa-play"></i> Start</button>
-              <button id="pomo-reset-btn" class="btn btn-outline btn-lg"><i class="fa-solid fa-rotate-left"></i> Reset</button>
+              <button class="btn btn-primary btn-lg" id="pomo-play-btn" onclick="togglePomodoro()"><i class="fa-solid fa-play"></i> Start Session</button>
+              <button class="btn btn-secondary btn-lg" onclick="resetPomodoro()"><i class="fa-solid fa-rotate-left"></i> Reset</button>
             </div>
           </div>
+
+          <!-- Ambient Audio Synthesizer (Zero External Files!) -->
+          <div class="panel ambient-sound-panel">
+            <h3><i class="fa-solid fa-sliders"></i> Focus Sound Generator (Web Audio Synthesizer)</h3>
+            <p class="text-muted text-sm">Synthesized in real-time inside your browser to enhance cognitive flow state:</p>
+            
+            <div class="sound-grid">
+              <div class="sound-card" id="sound-card-binaural" onclick="toggleSound('binaural')">
+                <i class="fa-solid fa-wave-square sound-icon"></i>
+                <div class="sound-info">
+                  <h4>40Hz Binaural Waves</h4>
+                  <span>Gamma frequency for deep problem solving</span>
+                </div>
+                <div class="sound-status-dot"></div>
+              </div>
+
+              <div class="sound-card" id="sound-card-white" onclick="toggleSound('white')">
+                <i class="fa-solid fa-wind sound-icon"></i>
+                <div class="sound-info">
+                  <h4>Pure White Noise</h4>
+                  <span>Masks distracting background sounds</span>
+                </div>
+                <div class="sound-status-dot"></div>
+              </div>
+
+              <div class="sound-card" id="sound-card-pink" onclick="toggleSound('pink')">
+                <i class="fa-solid fa-cloud-rain sound-icon"></i>
+                <div class="sound-info">
+                  <h4>Pink Calming Noise</h4>
+                  <span>Balanced frequency for reading & memorization</span>
+                </div>
+                <div class="sound-status-dot"></div>
+              </div>
+            </div>
+          </div>
+
         </div>
       </section>
 
-      <!-- TAB 6: GPA CALCULATOR & TOOLS -->
-      <section id="tab-tools" class="tab-content">
-        <div class="card-grid-split">
+      <!-- TAB 7: SCRATCHPAD NOTES -->
+      <section id="tab-notes" class="tab-pane">
+        <div class="notes-workspace panel">
+          <div class="notes-toolbar">
+            <input type="text" id="note-title" placeholder="Untitled Study Note..." class="note-title-input" />
+            <div class="notes-actions">
+              <span class="text-muted text-sm" id="word-count-badge">0 words</span>
+              <button class="btn btn-secondary" onclick="exportNotes()"><i class="fa-solid fa-download"></i> Export .txt</button>
+            </div>
+          </div>
+          <textarea id="note-textarea" placeholder="Start typing your research, equations, or lecture summary... (Auto-saved locally)" oninput="updateNoteStats()"></textarea>
+        </div>
+      </section>
+
+      <!-- TAB 8: GPA CALCULATOR & EXAM PREDICTOR -->
+      <section id="tab-gpa" class="tab-pane">
+        <div class="dual-grid">
+          
           <!-- GPA Calculator -->
-          <div class="card">
-            <div class="card-header">
-              <h3><i class="fa-solid fa-calculator"></i> GPA Calculator</h3>
-              <button class="btn-sm" id="add-course-btn"><i class="fa-solid fa-plus"></i> Add Course</button>
+          <div class="panel">
+            <div class="panel-header">
+              <h3><i class="fa-solid fa-calculator"></i> Semester GPA Calculator</h3>
+              <button class="btn btn-secondary btn-sm" onclick="addGpaRow()"><i class="fa-solid fa-plus"></i> Add Course</button>
             </div>
-            <div id="course-list" class="course-list">
-              <!-- Default Course Rows -->
-              <div class="course-row">
-                <input type="text" placeholder="Course Name" value="Subject 1" class="course-name" />
-                <input type="number" placeholder="Credits" value="3" min="1" max="10" class="course-credits" />
-                <select class="course-grade">
-                  <option value="4.0">A (4.0)</option>
-                  <option value="3.7">A- (3.7)</option>
-                  <option value="3.3">B+ (3.3)</option>
-                  <option value="3.0">B (3.0)</option>
-                  <option value="2.7">B- (2.7)</option>
-                  <option value="2.0">C (2.0)</option>
-                  <option value="0.0">F (0.0)</option>
-                </select>
-              </div>
+
+            <div class="gpa-table-header">
+              <span>Course Name</span>
+              <span>Credits</span>
+              <span>Grade</span>
             </div>
-            <div class="gpa-result-box">
-              <button class="btn btn-primary" id="calc-gpa-btn">Calculate GPA</button>
-              <div class="gpa-score">
+
+            <div class="gpa-rows-container" id="gpa-rows-container">
+              <!-- Dynamically populated -->
+            </div>
+
+            <div class="gpa-total-footer">
+              <button class="btn btn-primary" onclick="calculateGPA()">Calculate GPA</button>
+              <div class="gpa-result-display">
                 <span>Calculated GPA:</span>
-                <strong id="final-gpa">--</strong>
+                <strong id="final-gpa-score">4.00</strong>
               </div>
             </div>
           </div>
 
-          <!-- Quick Flashcard Active Recall Tool -->
-          <div class="card">
-            <div class="card-header">
-              <h3><i class="fa-solid fa-layer-group"></i> Active Recall Flashcard</h3>
+          <!-- Final Exam Target Predictor -->
+          <div class="panel">
+            <div class="panel-header">
+              <h3><i class="fa-solid fa-bullseye icon-amber"></i> Target Final Exam Mark Predictor</h3>
             </div>
-            <div class="flashcard" id="study-card" onclick="flipCard()">
-              <div class="flashcard-inner">
-                <div class="flashcard-front">
-                  <span class="hint-label">Question (Click to flip)</span>
-                  <p id="fc-question">What is Newton's First Law of Motion?</p>
-                </div>
-                <div class="flashcard-back">
-                  <span class="hint-label">Answer</span>
-                  <p id="fc-answer">An object remains at rest or in uniform motion unless acted upon by a net external force.</p>
-                </div>
+            <p class="text-muted text-sm">Find out what percentage you need on your final exam to secure your desired overall grade.</p>
+            
+            <div class="app-form mt-3">
+              <div class="input-field">
+                <label>Current Internal Score (%)</label>
+                <input type="number" id="pred-current-mark" value="78" min="0" max="100" />
+              </div>
+              <div class="input-field">
+                <label>Weight of Final Exam (%)</label>
+                <input type="number" id="pred-exam-weight" value="40" min="1" max="100" />
+              </div>
+              <div class="input-field">
+                <label>Target Overall Course Grade (%)</label>
+                <input type="number" id="pred-target-mark" value="85" min="1" max="100" />
+              </div>
+              <button class="btn btn-primary" onclick="calculateTargetExamMark()">Calculate Required Final Mark</button>
+              
+              <div class="predictor-result-box" id="pred-result-box" style="display:none;">
+                <span>Required Final Exam Score:</span>
+                <h3 id="pred-result-val">95.5%</h3>
               </div>
             </div>
-            <div class="flashcard-controls">
-              <button class="btn-sm btn-outline" onclick="nextCard(-1)"><i class="fa-solid fa-arrow-left"></i> Previous</button>
-              <button class="btn-sm btn-primary" onclick="nextCard(1)">Next Card <i class="fa-solid fa-arrow-right"></i></button>
-            </div>
           </div>
+
         </div>
       </section>
 
     </main>
   </div>
 
+  <!-- Command Palette Modal (Ctrl + K) -->
+  <div class="modal-backdrop" id="cmd-modal" onclick="closeModalsOnBackdrop(event)">
+    <div class="cmd-palette">
+      <div class="cmd-search-header">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" id="cmd-input" placeholder="Type a command or jump to tool... (e.g. 'ai', 'calendar', 'timer')" oninput="filterCommands()" />
+        <kbd>ESC</kbd>
+      </div>
+      <div class="cmd-list" id="cmd-list">
+        <div class="cmd-item" onclick="execCommand('dashboard')"><i class="fa-solid fa-gauge-high"></i> Open Dashboard</div>
+        <div class="cmd-item" onclick="execCommand('ai-studio')"><i class="fa-solid fa-brain"></i> Open AI Study Studio</div>
+        <div class="cmd-item" onclick="execCommand('calendar')"><i class="fa-regular fa-calendar-check"></i> Open Google Calendar Sync</div>
+        <div class="cmd-item" onclick="execCommand('kanban')"><i class="fa-solid fa-table-columns"></i> View Kanban Assignments</div>
+        <div class="cmd-item" onclick="execCommand('focus-room')"><i class="fa-solid fa-headphones-simple"></i> Start Focus Timer & Ambient Audio</div>
+        <div class="cmd-item" onclick="execCommand('flashcards')"><i class="fa-solid fa-layer-group"></i> Practice Flashcards</div>
+        <div class="cmd-item" onclick="execCommand('gpa')"><i class="fa-solid fa-calculator"></i> Calculate GPA</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Task Modal -->
+  <div class="modal-backdrop" id="task-modal" onclick="closeModalsOnBackdrop(event)">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>Add New Assignment / Task</h3>
+        <button class="btn-icon" onclick="closeAllModals()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <form id="new-task-form" onsubmit="handleCreateTask(event)">
+        <div class="input-field">
+          <label>Task Title</label>
+          <input type="text" id="modal-task-title" placeholder="e.g. Implement Binary Search Tree in Python" required />
+        </div>
+        <div class="input-row">
+          <div class="input-field">
+            <label>Subject</label>
+            <select id="modal-task-subject">
+              <option value="Computer Science">Computer Science</option>
+              <option value="Mathematics">Mathematics</option>
+              <option value="Physics">Physics</option>
+              <option value="Literature">Literature</option>
+            </select>
+          </div>
+          <div class="input-field">
+            <label>Priority</label>
+            <select id="modal-task-priority">
+              <option value="High">High Priority 🔥</option>
+              <option value="Medium" selected>Medium</option>
+              <option value="Low">Low</option>
+            </select>
+          </div>
+        </div>
+        <div class="input-field">
+          <label>Due Date</label>
+          <input type="date" id="modal-task-date" required />
+        </div>
+        <button type="submit" class="btn btn-primary w-100 mt-2">Create Task</button>
+      </form>
+    </div>
+  </div>
+
   <script src="script.js"></script>
 </body>
-</html>
+</html>        
